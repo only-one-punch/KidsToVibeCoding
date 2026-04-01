@@ -1,0 +1,25 @@
+# .ralphrc - CodeBuddyAI 项目配置
+
+PROJECT_NAME="CodeBuddyAI"
+PROJECT_TYPE="typescript"
+
+CLAUDE_CODE_CMD="claude"
+
+MAX_CALLS_PER_HOUR=500
+CLAUDE_TIMEOUT_MINUTES=15
+CLAUDE_OUTPUT_FORMAT="json"
+
+ALLOWED_TOOLS="Write,Read,Edit,Grep,Glob,Bash(git add *),Bash(git commit *),Bash(git diff *),Bash(git log *),Bash(git status),Bash(git status *),Bash(npm *),Bash(npx *),Bash(python *),Bash(pytest *),Bash(cd *),Bash(ls *),Bash(cat *),Bash(mkdir *),Bash(docker *)"
+
+SESSION_CONTINUITY=true
+SESSION_EXPIRY_HOURS=24
+
+CB_NO_PROGRESS_THRESHOLD=3
+CB_SAME_ERROR_THRESHOLD=5
+CB_OUTPUT_DECLINE_THRESHOLD=70
+CB_COOLDOWN_MINUTES=30
+CB_AUTO_RESET=false
+
+CLAUDE_AUTO_UPDATE=true
+CLAUDE_MIN_VERSION="2.0.76"
+RALPH_VERBOSE=false
