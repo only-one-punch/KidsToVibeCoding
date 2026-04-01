@@ -1,23 +1,15 @@
-"""AI Assistant Service - AI 对话服务"""
+"""AI Assistant Service - FastAPI Application."""
+from datetime import datetime
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(
-    title="CodeBuddyAI AI Assistant",
-    description="AI 对话服务",
-    version="0.1.0",
-)
+app = FastAPI(title="CodeBuddyAI - AI Assistant", version="0.1.0", docs_url="/docs")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
-
-@app.get("/health")
+@app.get("/health", tags=["Health"])
 async def health_check():
-    """健康检查端点"""
-    return {
-        "status": "healthy",
-        "service": "ai-assistant",
-        "version": "0.1.0"
-    }
+    return {"status": "healthy", "service": "ai-assistant-service", "timestamp": datetime.utcnow().isoformat() + "Z", "version": "0.1.0"}
 
-
-@app.get("/")
-async def root():
-    return {"service": "ai-assistant", "docs": "/docs"}
+@app.get("/ready", tags=["Health"])
+async def readiness_check():
+    return {"status": "ready"}

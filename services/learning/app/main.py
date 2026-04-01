@@ -1,23 +1,20 @@
-"""Learning Service - 学习服务"""
+"""Learning Service - FastAPI Application."""
+from datetime import datetime
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
-    title="CodeBuddyAI Learning Service",
-    description="学习管理服务",
+    title="CodeBuddyAI - Learning Service",
     version="0.1.0",
+    docs_url="/docs",
 )
 
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
-@app.get("/health")
+@app.get("/health", tags=["Health"])
 async def health_check():
-    """健康检查端点"""
-    return {
-        "status": "healthy",
-        "service": "learning",
-        "version": "0.1.0"
-    }
+    return {"status": "healthy", "service": "learning-service", "timestamp": datetime.utcnow().isoformat() + "Z", "version": "0.1.0"}
 
-
-@app.get("/")
-async def root():
-    return {"service": "learning", "docs": "/docs"}
+@app.get("/ready", tags=["Health"])
+async def readiness_check():
+    return {"status": "ready"}
