@@ -45,9 +45,9 @@
 - [x] 实现 Token 提取与用户信息注入（注入到请求上下文）
 
 ### 1.2.4 Gateway Service - 限流中间件
-- [ ] 实现用户级限流（基于 user_id，Redis 计数）
-- [ ] 实现 IP 级限流（基于 client IP）
-- [ ] 实现 AI 接口特殊限流（更严格的调用频率限制）
+- [x] 实现用户级限流（基于 user_id，Redis 计数）
+- [x] 实现 IP 级限流（基于 client IP）
+- [x] 实现 AI 接口特殊限流（更严格的调用频率限制）
 
 ### 1.3.1 User Service - 项目搭建
 - [x] 初始化 FastAPI 项目（services/user/）
