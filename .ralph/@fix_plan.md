@@ -40,9 +40,9 @@
 - [x] 实现 /api/v1/code/* 路由转发到 Sandbox Service
 
 ### 1.2.3 Gateway Service - 认证中间件
-- [ ] 实现 JWT 验证中间件（从 Header 提取并验证 Token）
-- [ ] 实现 API Key 验证（服务间调用认证）
-- [ ] 实现 Token 提取与用户信息注入（注入到请求上下文）
+- [x] 实现 JWT 验证中间件（从 Header 提取并验证 Token）
+- [x] 实现 API Key 验证（服务间调用认证）
+- [x] 实现 Token 提取与用户信息注入（注入到请求上下文）
 
 ### 1.2.4 Gateway Service - 限流中间件
 - [ ] 实现用户级限流（基于 user_id，Redis 计数）
