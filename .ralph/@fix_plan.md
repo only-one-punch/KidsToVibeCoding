@@ -15,11 +15,11 @@
 - [x] 配置代码规范（black、isort、flake8 配置文件）
 
 ### 1.1.2 数据库初始化
-- [ ] 创建 docker-compose.yml（PostgreSQL + Redis）
-- [ ] 设计 users 数据库 schema（SQL 文件）
-- [ ] 设计 auth_credentials 表
-- [ ] 设计 parent_links 表
-- [ ] 初始化 Alembic 并创建数据库迁移脚本
+- [x] 创建 docker-compose.yml（PostgreSQL + Redis）
+- [x] 设计 users 数据库 schema（SQL 文件）
+- [x] 设计 auth_credentials 表
+- [x] 设计 parent_links 表
+- [x] 初始化 Alembic 并创建数据库迁移脚本
 
 ### 1.1.3 环境配置
 - [ ] 创建 .env.example 模板（包含所有服务所需环境变量）
