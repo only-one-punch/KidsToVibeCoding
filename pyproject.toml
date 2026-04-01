@@ -1,0 +1,40 @@
+[project]
+name = "codebuddyai"
+version = "0.1.0"
+description = "AI 编程学习平台 - 面向 12-14 岁青少年"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "CodeBuddyAI Team"}
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+    | \.venv
+    | __pycache__
+    | node_modules
+    | frontend
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+skip = [".venv", "node_modules", "frontend"]
+
+[tool.flake8]
+max-line-length = 88
+exclude = [".git", "__pycache__", ".venv", "node_modules", "frontend"]
+ignore = ["E203", "W503"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true

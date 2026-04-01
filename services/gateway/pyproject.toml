@@ -1,0 +1,19 @@
+[project]
+name = "gateway-service"
+version = "0.1.0"
+description = "API Gateway Service - 统一入口、认证、限流"
+requires-python = ">=3.11"
+
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "httpx>=0.25.0",
+    "python-jose[cryptography]>=3.3.0",
+    "redis>=5.0.0",
+    "pydantic>=2.5.0",
+    "python-multipart>=0.0.6",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
