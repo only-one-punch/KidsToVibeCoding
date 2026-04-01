@@ -55,11 +55,11 @@
 - [x] 配置 Redis 连接
 
 ### 1.3.2 User Service - 用户认证 API
-- [ ] POST /api/v1/user/auth/register - 用户注册（含参数校验、密码 bcrypt 加密）
-- [ ] POST /api/v1/user/auth/login - 用户登录（返回 access_token + refresh_token）
-- [ ] POST /api/v1/user/auth/logout - 用户登出（Token 黑名单）
-- [ ] POST /api/v1/user/auth/refresh - Token 刷新
-- [ ] JWT Token 生成与验证工具函数（access 30min, refresh 7days）
+- [x] POST /api/v1/user/auth/register - 用户注册（含参数校验、密码 bcrypt 加密）
+- [x] POST /api/v1/user/auth/login - 用户登录（返回 access_token + refresh_token）
+- [x] POST /api/v1/user/auth/logout - 用户登出（Token 黑名单）
+- [x] POST /api/v1/user/auth/refresh - Token 刷新
+- [x] JWT Token 生成与验证工具函数（access 30min, refresh 7days）
 
 ### 1.3.3 User Service - 用户档案 API
 - [ ] GET /api/v1/user/profile - 获取用户信息

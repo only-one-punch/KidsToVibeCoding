@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routes.proxy import create_proxy_router
+from app.middleware.rate_limit import RateLimitMiddleware
 
 app = FastAPI(
     title="CodeBuddyAI - Gateway",
@@ -22,6 +23,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 限流中间件
+app.add_middleware(RateLimitMiddleware, redis_url=os.getenv("REDIS_URL"))
 
 # 服务 URL 配置
 SERVICE_URLS = {
@@ -47,16 +51,6 @@ app.include_router(
     create_proxy_router("ai-assistant", SERVICE_URLS["ai-assistant"]),
     prefix="/api/v1/chat",
     tags=["AI Assistant"]
-)
-app.include_router(
-    create_proxy_router("multimodal", SERVICE_URLS["multimodal"]),
-    prefix="/api/v1/voice",
-    tags=["Multimodal Service"]
-)
-app.include_router(
-    create_proxy_router("sandbox", SERVICE_URLS["sandbox"]),
-    prefix="/api/v1/code",
-    tags=["Sandbox Service"]
 )
 app.include_router(
     create_proxy_router("multimodal", SERVICE_URLS["multimodal"]),

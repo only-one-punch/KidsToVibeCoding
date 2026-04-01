@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.database import init_db, close_db
 from app.core.redis_client import close_redis
+from app.api import auth_router
 
 
 @asynccontextmanager
@@ -36,6 +37,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 注册认证路由
+app.include_router(auth_router, prefix="/api/v1/user")
 
 
 @app.get("/health", tags=["Health"])
