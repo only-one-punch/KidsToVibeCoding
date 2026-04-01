@@ -51,8 +51,8 @@
 
 ### 1.3.1 User Service - 项目搭建
 - [x] 初始化 FastAPI 项目（services/user/）
-- [ ] 配置 PostgreSQL 数据库连接（SQLAlchemy async）
-- [ ] 配置 Redis 连接
+- [x] 配置 PostgreSQL 数据库连接（SQLAlchemy async）
+- [x] 配置 Redis 连接
 
 ### 1.3.2 User Service - 用户认证 API
 - [ ] POST /api/v1/user/auth/register - 用户注册（含参数校验、密码 bcrypt 加密）
