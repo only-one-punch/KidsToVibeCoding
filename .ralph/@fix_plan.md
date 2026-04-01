@@ -33,11 +33,11 @@
 - [x] 配置 Swagger 文档（/docs）
 
 ### 1.2.2 Gateway Service - 路由配置
-- [ ] 实现 /api/v1/user/* 路由转发到 User Service
-- [ ] 实现 /api/v1/learning/* 路由转发到 Learning Service
-- [ ] 实现 /api/v1/chat/* 路由转发（WebSocket）到 AI Assistant Service
-- [ ] 实现 /api/v1/voice/* 路由转发到 Multimodal Service
-- [ ] 实现 /api/v1/code/* 路由转发到 Sandbox Service
+- [x] 实现 /api/v1/user/* 路由转发到 User Service
+- [x] 实现 /api/v1/learning/* 路由转发到 Learning Service
+- [x] 实现 /api/v1/chat/* 路由转发（WebSocket）到 AI Assistant Service
+- [x] 实现 /api/v1/voice/* 路由转发到 Multimodal Service
+- [x] 实现 /api/v1/code/* 路由转发到 Sandbox Service
 
 ### 1.2.3 Gateway Service - 认证中间件
 - [ ] 实现 JWT 验证中间件（从 Header 提取并验证 Token）
