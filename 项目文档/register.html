@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>注册 - CodeBuddyAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --coral: #FF6B6B;
+      --coral-light: #FF8E8E;
+      --coral-dark: #E85555;
+      --coral-muted: rgba(255, 107, 107, 0.1);
+      --teal: #2DD4BF;
+      --teal-muted: rgba(45, 212, 191, 0.1);
+      --ink: #1F2937;
+      --slate: #6B7280;
+      --muted: #9CA3AF;
+      --cream: #FFFBF7;
+      --cream-dark: #FEF3E8;
+      --white: #FFFFFF;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Outfit", "Noto Sans SC", system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--slate);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      padding: 10px 16px;
+      border-radius: var(--radius-full);
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .back-btn:hover {
+      background: var(--cream-dark);
+      color: var(--ink);
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .register-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 40px 44px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.06);
+    }
+
+    .register-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 2px solid rgba(0, 0, 0, 0.06);
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-family: inherit;
+      color: var(--ink);
+      background: var(--white);
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--coral);
+      box-shadow: 0 0 0 4px var(--coral-muted);
+    }
+
+    .form-input::placeholder { color: var(--muted); }
+
+    .age-options {
+      display: flex;
+      gap: 10px;
+    }
+
+    .age-option {
+      flex: 1;
+      padding: 13px;
+      border: 2px solid rgba(0, 0, 0, 0.06);
+      border-radius: var(--radius-md);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s var(--ease-out);
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    .age-option:hover { border-color: var(--coral-light); }
+    .age-option.selected {
+      border-color: var(--coral);
+      background: var(--coral-muted);
+      color: var(--coral-dark);
+    }
+
+    .interests-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .interest-tag {
+      padding: 11px 14px;
+      border: 2px solid rgba(0, 0, 0, 0.06);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s var(--ease-out);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .interest-tag:hover { border-color: var(--teal-light); }
+    .interest-tag.selected {
+      border-color: var(--teal);
+      background: var(--teal-muted);
+      color: var(--teal-dark);
+    }
+
+    .interest-tag .check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      opacity: 0.4;
+    }
+
+    .interest-tag.selected .check {
+      opacity: 1;
+      background: var(--teal);
+      color: white;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px 24px;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s var(--ease-out);
+    }
+
+    .btn-coral {
+      background: var(--coral);
+      color: white;
+      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+    }
+
+    .btn-coral:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(255, 107, 107, 0.4);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: var(--coral);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .bg-decoration {
+      position: fixed;
+      pointer-events: none;
+      z-index: -1;
+      border-radius: 50%;
+      filter: blur(80px);
+    }
+
+    .bg-1 {
+      top: -150px;
+      right: -100px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255, 107, 107, 0.12), transparent 70%);
+    }
+
+    .bg-2 {
+      bottom: -150px;
+      left: -100px;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(45, 212, 191, 0.1), transparent 70%);
+    }
+
+    @media (max-width: 480px) {
+      .register-card { padding: 32px 24px; }
+      .interests-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-decoration bg-1"></div>
+  <div class="bg-decoration bg-2"></div>
+
+  <div class="top-bar">
+    <a href="index.html" class="back-btn">← 返回</a>
+    <a href="index.html" class="logo">🚀 CodeBuddyAI</a>
+  </div>
+
+  <main class="main">
+    <div class="register-card">
+      <h1 class="register-title">创建你的账号</h1>
+
+      <form id="registerForm">
+        <div class="form-group">
+          <label class="form-label">昵称</label>
+          <input type="text" class="form-input" placeholder="给自己取个酷酷的名字" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">年龄</label>
+          <div class="age-options">
+            <div class="age-option" onclick="selectAge(this)">6-9岁</div>
+            <div class="age-option" onclick="selectAge(this)">10-14岁</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">家长邮箱</label>
+          <input type="email" class="form-input" placeholder="用于接收学习报告" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">密码</label>
+          <input type="password" class="form-input" placeholder="设置一个安全的密码" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">你对什么感兴趣?</label>
+          <div class="interests-grid">
+            <div class="interest-tag" onclick="toggleInterest(this)">
+              <span class="check">✓</span>
+              <span>🌐 做网站</span>
+            </div>
+            <div class="interest-tag" onclick="toggleInterest(this)">
+              <span class="check">✓</span>
+              <span>🎮 做游戏</span>
+            </div>
+            <div class="interest-tag" onclick="toggleInterest(this)">
+              <span class="check">✓</span>
+              <span>🎬 做视频</span>
+            </div>
+            <div class="interest-tag" onclick="toggleInterest(this)">
+              <span class="check">✓</span>
+              <span>🎨 画画</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-coral">创建账号</button>
+      </form>
+
+      <p class="login-link">已有账号? <a href="login.html">立即登录</a></p>
+    </div>
+  </main>
+
+  <script>
+    function selectAge(el) {
+      document.querySelectorAll('.age-option').forEach(opt => opt.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function toggleInterest(el) {
+      el.classList.toggle('selected');
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      window.location.href = 'learning-path.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 老师 - CodeBuddyAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --coral: #FF6B6B;
+      --coral-muted: rgba(255, 107, 107, 0.1);
+      --teal: #2DD4BF;
+      --teal-muted: rgba(45, 212, 191, 0.1);
+      --ink: #1F2937;
+      --slate: #6B7280;
+      --muted: #9CA3AF;
+      --cream: #FFFBF7;
+      --cream-dark: #FEF3E8;
+      --white: #FFFFFF;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 9999px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Outfit", "Noto Sans SC", system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--white);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--slate);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .back-btn:hover { background: var(--cream-dark); color: var(--ink); }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      border: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .action-btn:hover { background: var(--coral-muted); }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 20px;
+    }
+
+    .context-bar {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--slate);
+    }
+
+    .context-bar span {
+      color: var(--coral);
+      font-weight: 600;
+    }
+
+    .teacher-section {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+    }
+
+    .teacher-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, var(--coral), var(--teal));
+      display: grid;
+      place-items: center;
+      font-size: 36px;
+      flex-shrink: 0;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .teacher-content {
+      flex: 1;
+    }
+
+    .teacher-bubble {
+      background: var(--cream);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .quick-btn {
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      background: var(--cream-dark);
+      border: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--slate);
+      cursor: pointer;
+      transition: all 0.2s var(--ease-out);
+      font-family: inherit;
+    }
+
+    .quick-btn:hover {
+      background: var(--coral-muted);
+      color: var(--coral);
+    }
+
+    .chat-section {
+      flex: 1;
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      margin-bottom: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chat-message {
+      display: flex;
+      gap: 12px;
+      max-width: 90%;
+    }
+
+    .chat-message.user {
+      flex-direction: row-reverse;
+      margin-left: auto;
+    }
+
+    .chat-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .chat-message.user .chat-avatar {
+      background: var(--coral);
+    }
+
+    .chat-bubble {
+      background: var(--cream);
+      border-radius: var(--radius-lg);
+      padding: 12px 16px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .chat-message.user .chat-bubble {
+      background: var(--coral);
+      color: white;
+    }
+
+    .chat-bubble .action-link {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .input-section {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 16px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .input-wrapper {
+      flex: 1;
+      position: relative;
+    }
+
+    .chat-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid rgba(0, 0, 0, 0.06);
+      border-radius: var(--radius-lg);
+      font-size: 15px;
+      font-family: inherit;
+      resize: none;
+      min-height: 52px;
+      max-height: 120px;
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--coral);
+    }
+
+    .input-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .input-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .voice-btn {
+      background: var(--cream-dark);
+    }
+
+    .voice-btn:hover { background: var(--teal-muted); }
+
+    .send-btn {
+      background: var(--coral);
+      color: white;
+    }
+
+    .send-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 14px rgba(255, 107, 107, 0.3);
+    }
+
+    .input-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .function-tabs {
+      display: flex;
+      gap: 6px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .tab-btn {
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      background: transparent;
+      border: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s var(--ease-out);
+      font-family: inherit;
+    }
+
+    .tab-btn:hover { background: var(--cream-dark); }
+    .tab-btn.active {
+      background: var(--ink);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a href="lesson.html" class="back-btn">← 返回</a>
+    <div style="font-weight: 600; font-size: 16px;">🤖 AI 老师小助手</div>
+    <div class="top-actions">
+      <button class="action-btn" title="最小化">−</button>
+      <button class="action-btn" title="关闭">✕</button>
+    </div>
+  </div>
+
+  <main class="main">
+    <div class="context-bar">
+      📚 当前学习: <span>🎨 Figma 设计 - 第3课</span>
+    </div>
+
+    <div class="teacher-section">
+      <div class="teacher-avatar">🧑‍🏫</div>
+      <div class="teacher-content">
+        <div class="teacher-bubble">
+          你好呀小明! 👋 有什么问题都可以问我~ 我会帮你理解任何不懂的地方!
+        </div>
+        <div class="quick-actions">
+          <button class="quick-btn" onclick="askQuestion('这个怎么做?')">❓ 这个怎么做?</button>
+          <button class="quick-btn" onclick="askQuestion('代码出错了')">🐛 代码出错了</button>
+          <button class="quick-btn" onclick="askQuestion('给我一个提示')">💡 想要提示</button>
+          <button class="quick-btn" onclick="askQuestion('下一步是什么')">🎯 下一步</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-section" id="chatSection">
+      <div class="chat-message user">
+        <div class="chat-avatar">👦</div>
+        <div class="chat-bubble">矩形工具在哪里?</div>
+      </div>
+      <div class="chat-message">
+        <div class="chat-avatar">🧑‍🏫</div>
+        <div class="chat-bubble">
+          在左侧工具栏里，图标是 □<br>
+          也可以按键盘 <strong>R 键</strong>快速打开哦!
+          <div class="action-link">📷 查看截图示意</div>
+        </div>
+      </div>
+      <div class="chat-message user">
+        <div class="chat-avatar">👦</div>
+        <div class="chat-bubble">我画出来是歪的怎么办?</div>
+      </div>
+      <div class="chat-message">
+        <div class="chat-avatar">🧑‍🏫</div>
+        <div class="chat-bubble">
+          没关系! 按住 <strong>Shift 键</strong>就能画正方形了~<br>
+          你试试看，很简单的! 🎉
+          <div class="action-link">🎬 观看演示视频</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-section">
+      <div class="input-row">
+        <div class="input-wrapper">
+          <textarea class="chat-input" id="messageInput" placeholder="输入你的问题..." rows="1"></textarea>
+        </div>
+        <div class="input-actions">
+          <button class="input-btn voice-btn" title="语音输入">🎤</button>
+          <button class="input-btn send-btn" onclick="sendMessage()">➤</button>
+        </div>
+      </div>
+      <div class="input-hint">
+        💡 提示: 可以用语音提问哦! 按住麦克风按钮说话
+      </div>
+      <div class="function-tabs">
+        <button class="tab-btn active">📚 知识库</button>
+        <button class="tab-btn">🎯 练习题</button>
+        <button class="tab-btn">📊 学习报告</button>
+        <button class="tab-btn">⚙️ 设置</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+      if (!message) return;
+
+      const chatSection = document.getElementById('chatSection');
+
+      // Add user message
+      chatSection.innerHTML += `
+        <div class="chat-message user">
+          <div class="chat-avatar">👦</div>
+          <div class="chat-bubble">${message}</div>
+        </div>
+      `;
+
+      input.value = '';
+
+      // Simulate AI response
+      setTimeout(() => {
+        chatSection.innerHTML += `
+          <div class="chat-message">
+            <div class="chat-avatar">🧑‍🏫</div>
+            <div class="chat-bubble">
+              好问题! 让我来帮你解答...<br>
+              这个需要你先尝试一下，然后告诉我结果哦~ 💪
+            </div>
+          </div>
+        `;
+        chatSection.scrollTop = chatSection.scrollHeight;
+      }, 800);
+
+      chatSection.scrollTop = chatSection.scrollHeight;
+    }
+
+    function askQuestion(q) {
+      document.getElementById('messageInput').value = q;
+      sendMessage();
+    }
+
+    document.getElementById('messageInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>

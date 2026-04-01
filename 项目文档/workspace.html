@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>创作工作台 - CodeBuddyAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --coral: #FF6B6B;
+      --coral-muted: rgba(255, 107, 107, 0.1);
+      --teal: #2DD4BF;
+      --teal-muted: rgba(45, 212, 191, 0.1);
+      --ink: #1F2937;
+      --ink-dark: #111827;
+      --slate: #6B7280;
+      --muted: #9CA3AF;
+      --cream: #FFFBF7;
+      --cream-dark: #FEF3E8;
+      --white: #FFFFFF;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Outfit", "Noto Sans SC", system-ui, sans-serif;
+      background: var(--ink-dark);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1F2937;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .back-btn:hover { background: rgba(255, 255, 255, 0.06); color: var(--white); }
+
+    .project-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--white);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--slate);
+    }
+
+    .btn-ghost:hover { color: var(--white); }
+
+    .btn-coral {
+      background: var(--coral);
+      color: white;
+    }
+
+    .btn-coral:hover { transform: translateY(-1px); }
+
+    .main-container {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #1F2937;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-section {
+      padding: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .file-tree {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .file-item {
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--slate);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s var(--ease-out);
+    }
+
+    .file-item:hover { background: rgba(255, 255, 255, 0.04); color: var(--white); }
+    .file-item.active { background: rgba(255, 107, 107, 0.15); color: var(--coral); }
+
+    .element-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .element-item {
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--slate);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s var(--ease-out);
+    }
+
+    .element-item:hover { background: rgba(255, 255, 255, 0.04); color: var(--white); }
+
+    .ai-helper {
+      margin-top: auto;
+      padding: 12px;
+    }
+
+    .ai-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(145deg, var(--coral), var(--teal));
+      border: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .ai-btn:hover { transform: scale(1.02); }
+
+    .editor-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .editor-tabs {
+      display: flex;
+      background: #1F2937;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .editor-tab {
+      padding: 10px 20px;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s var(--ease-out);
+    }
+
+    .editor-tab:hover { color: var(--white); }
+    .editor-tab.active {
+      color: var(--coral);
+      border-bottom-color: var(--coral);
+    }
+
+    .code-editor {
+      flex: 1;
+      background: #0D1117;
+      padding: 16px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow: auto;
+    }
+
+    .code-line {
+      display: flex;
+      gap: 20px;
+    }
+
+    .line-number {
+      color: #484F58;
+      user-select: none;
+      min-width: 24px;
+      text-align: right;
+    }
+
+    .line-content { color: #C9D1D9; }
+
+    .tag { color: #7EE787; }
+    .attr { color: #79C0FF; }
+    .string { color: #A5D6FF; }
+    .text { color: #C9D1D9; }
+
+    .preview-area {
+      width: 400px;
+      background: var(--cream);
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-header {
+      padding: 12px 16px;
+      background: #1F2937;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      .preview-area { display: none; }
+      .sidebar { width: 180px; }
+    }
+
+    @media (max-width: 600px) {
+      .sidebar { display: none; }
+      .top-actions .btn-ghost { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a href="learning-path.html" class="back-btn">← 返回</a>
+    <span class="project-name">自由创作工作台</span>
+    <div class="top-actions">
+      <button class="btn btn-ghost">💾 保存</button>
+      <button class="btn btn-ghost">📤 分享</button>
+      <button class="btn btn-coral">▶ 运行</button>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">📁 项目文件</div>
+        <div class="file-tree">
+          <div class="file-item active">📄 index.html</div>
+          <div class="file-item">📄 style.css</div>
+          <div class="file-item">📄 script.js</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">🎨 元素库</div>
+        <div class="element-list">
+          <div class="element-item">📝 标题</div>
+          <div class="element-item">📄 段落</div>
+          <div class="element-item">🖼️ 图片</div>
+          <div class="element-item">🔘 按钮</div>
+          <div class="element-item">🔗 链接</div>
+        </div>
+      </div>
+
+      <div class="ai-helper">
+        <button class="ai-btn" onclick="location.href='ai-chat.html'">
+          🤖 AI 助手
+        </button>
+      </div>
+    </aside>
+
+    <main class="editor-area">
+      <div class="editor-tabs">
+        <div class="editor-tab active">index.html</div>
+        <div class="editor-tab">style.css</div>
+        <div class="editor-tab">script.js</div>
+      </div>
+
+      <div class="code-editor">
+        <div class="code-line">
+          <span class="line-number">1</span>
+          <span class="line-content"><span class="tag">&lt;!DOCTYPE html&gt;</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-number">2</span>
+          <span class="line-content"><span class="tag">&lt;html&gt;</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-number">3</span>
+          <span class="line-content">  <span class="tag">&lt;head&gt;</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-number">4</span>
+          <span class="line-content">    <span class="tag">&lt;title&gt;</span><span class="text">我的作品</span><span class="tag">&lt;/title&gt;</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-number">5</span>
+          <span class="line-content">  <span class="tag">&lt;/head&gt;</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-number">6</span>
+          <span class="line-content">  <span class="tag">&lt;body&gt;</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-number">7</span>
+          <span class="line-content">    <span class="tag">&lt;h1&gt;</span><span class="text">Hello World</span><span class="tag">&lt;/h1&gt;</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-number">8</span>
+          <span class="line-content">  <span class="tag">&lt;/body&gt;</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-number">9</span>
+          <span class="line-content"><span class="tag">&lt;/html&gt;</span></span>
+        </div>
+      </div>
+    </main>
+
+    <aside class="preview-area">
+      <div class="preview-header">
+        👁️ 预览效果
+      </div>
+      <div class="preview-content">
+        Hello World
+      </div>
+    </aside>
+  </div>
+</body>
+</html>

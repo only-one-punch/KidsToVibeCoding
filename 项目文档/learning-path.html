@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>选择学习路径 - CodeBuddyAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --coral: #FF6B6B;
+      --coral-muted: rgba(255, 107, 107, 0.1);
+      --teal: #2DD4BF;
+      --teal-muted: rgba(45, 212, 191, 0.1);
+      --gold: #FBBF24;
+      --gold-muted: rgba(251, 191, 36, 0.1);
+      --ink: #1F2937;
+      --ink-light: #374151;
+      --slate: #6B7280;
+      --muted: #9CA3AF;
+      --cream: #FFFBF7;
+      --cream-dark: #FEF3E8;
+      --white: #FFFFFF;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 9999px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Outfit", "Noto Sans SC", system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    .top-bar {
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--white);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .user-greeting {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(145deg, var(--coral), var(--teal));
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+    }
+
+    .user-stats {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      color: var(--slate);
+    }
+
+    .stat-item .value {
+      color: var(--coral);
+      font-weight: 700;
+    }
+
+    .main {
+      padding: 40px 24px 60px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .path-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      margin-bottom: 18px;
+      border: 2px solid transparent;
+      transition: all 0.3s var(--ease-out);
+      cursor: pointer;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .path-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+      border-color: var(--coral);
+    }
+
+    .path-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .path-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .path-emoji {
+      font-size: 36px;
+    }
+
+    .path-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .path-tags {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .tag {
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .tag.recommend { background: var(--coral-muted); color: var(--coral); }
+    .tag.hot { background: var(--gold-muted); color: #B45309; }
+    .tag.new { background: var(--teal-muted); color: var(--teal); }
+
+    .path-desc {
+      color: var(--slate);
+      font-size: 15px;
+      margin-bottom: 16px;
+      padding-left: 50px;
+    }
+
+    .path-steps {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 16px;
+      padding-left: 50px;
+      flex-wrap: wrap;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--slate);
+    }
+
+    .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .step-arrow { color: var(--muted); font-size: 10px; }
+
+    .path-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-left: 50px;
+      margin-bottom: 18px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .path-action {
+      display: flex;
+      justify-content: flex-end;
+      padding-left: 50px;
+    }
+
+    .btn {
+      padding: 11px 22px;
+      border-radius: var(--radius-full);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s var(--ease-out);
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-coral {
+      background: var(--coral);
+      color: white;
+      box-shadow: 0 4px 14px rgba(255, 107, 107, 0.3);
+    }
+
+    .btn-coral:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(255, 107, 107, 0.4);
+    }
+
+    @media (max-width: 600px) {
+      .top-bar { flex-direction: column; gap: 10px; padding: 12px 16px; }
+      .main { padding: 24px 16px 40px; }
+      .path-header { flex-direction: column; gap: 10px; }
+      .path-desc, .path-steps, .path-meta, .path-action { padding-left: 0; }
+      .path-steps { gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="user-greeting">
+      <div class="avatar">👋</div>
+      <span>Hi, 小明!</span>
+    </div>
+    <div class="user-stats">
+      <div class="stat-item">🔔</div>
+      <div class="stat-item">💎 <span class="value">125</span></div>
+      <div class="stat-item">⭐ Level 5</div>
+    </div>
+  </div>
+
+  <main class="main">
+    <h1 class="page-title">选择你的学习路径</h1>
+
+    <a href="lesson.html" class="path-card">
+      <div class="path-header">
+        <div class="path-title">
+          <span class="path-emoji">🌐</span>
+          <div>
+            <div class="path-name">网站开发路径</div>
+            <div class="path-tags">
+              <span class="tag recommend">推荐</span>
+              <span class="tag hot">热门</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="path-desc">学会从设计到部署一个完整网站</p>
+      <div class="path-steps">
+        <div class="step"><span class="step-num">1</span> Figma设计</div>
+        <span class="step-arrow">→</span>
+        <div class="step"><span class="step-num">2</span> AI原型</div>
+        <span class="step-arrow">→</span>
+        <div class="step"><span class="step-num">3</span> 代码开发</div>
+        <span class="step-arrow">→</span>
+        <div class="step"><span class="step-num">4</span> 部署</div>
+      </div>
+      <div class="path-meta">
+        <div class="meta-item">⏱️ 12小时</div>
+        <div class="meta-item">👥 328人在学</div>
+        <div class="meta-item">⭐ 4.8</div>
+      </div>
+      <div class="path-action">
+        <span class="btn btn-coral">开始学习 →</span>
+      </div>
+    </a>
+
+    <a href="#" class="path-card">
+      <div class="path-header">
+        <div class="path-title">
+          <span class="path-emoji">🎮</span>
+          <div>
+            <div class="path-name">游戏开发路径</div>
+            <div class="path-tags">
+              <span class="tag new">新上线</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="path-desc">制作你自己的小游戏</p>
+      <div class="path-meta">
+        <div class="meta-item">⏱️ 15小时</div>
+        <div class="meta-item">👥 156人在学</div>
+        <div class="meta-item">⭐ 4.7</div>
+      </div>
+      <div class="path-action">
+        <span class="btn btn-coral">开始学习 →</span>
+      </div>
+    </a>
+
+    <a href="#" class="path-card">
+      <div class="path-header">
+        <div class="path-title">
+          <span class="path-emoji">🎬</span>
+          <div>
+            <div class="path-name">视频创作路径</div>
+          </div>
+        </div>
+      </div>
+      <p class="path-desc">用AI工具制作炫酷视频</p>
+      <div class="path-meta">
+        <div class="meta-item">⏱️ 10小时</div>
+        <div class="meta-item">👥 89人在学</div>
+        <div class="meta-item">⭐ 4.6</div>
+      </div>
+      <div class="path-action">
+        <span class="btn btn-coral">开始学习 →</span>
+      </div>
+    </a>
+  </main>
+</body>
+</html>

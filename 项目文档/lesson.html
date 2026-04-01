@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学习 Figma - CodeBuddyAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --coral: #FF6B6B;
+      --coral-muted: rgba(255, 107, 107, 0.1);
+      --teal: #2DD4BF;
+      --teal-muted: rgba(45, 212, 191, 0.1);
+      --gold: #FBBF24;
+      --ink: #1F2937;
+      --slate: #6B7280;
+      --muted: #9CA3AF;
+      --cream: #FFFBF7;
+      --cream-dark: #FEF3E8;
+      --white: #FFFFFF;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Outfit", "Noto Sans SC", system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    .top-bar {
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--white);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--slate);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .back-btn:hover { background: var(--cream-dark); color: var(--ink); }
+
+    .lesson-title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .progress-indicator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--slate);
+    }
+
+    .progress-bar {
+      width: 120px;
+      height: 6px;
+      background: var(--cream-dark);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--coral);
+      border-radius: var(--radius-full);
+      transition: width 0.5s var(--ease-out);
+    }
+
+    .help-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all 0.2s var(--ease-out);
+      border: none;
+      font-size: 16px;
+    }
+
+    .help-btn:hover { background: var(--coral-muted); }
+
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .step-progress {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .step-dots {
+      display: flex;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .step-dot {
+      width: 32px;
+      height: 6px;
+      border-radius: var(--radius-full);
+      background: var(--cream-dark);
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .step-dot.done { background: var(--teal); }
+    .step-dot.current { background: var(--coral); }
+
+    .step-text {
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .lesson-header {
+      margin-bottom: 24px;
+    }
+
+    .lesson-name {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .lesson-subtitle {
+      font-size: 15px;
+      color: var(--slate);
+    }
+
+    .video-area {
+      background: var(--ink);
+      border-radius: var(--radius-lg);
+      aspect-ratio: 16/9;
+      margin-bottom: 24px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .play-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .play-btn:hover {
+      transform: scale(1.1);
+      background: var(--coral);
+    }
+
+    .steps-section {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .steps-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      transition: all 0.2s var(--ease-out);
+      cursor: pointer;
+    }
+
+    .step-item:hover { background: var(--cream); }
+    .step-item.current { background: var(--coral-muted); }
+    .step-item.done .step-icon { background: var(--teal); color: white; }
+
+    .step-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-content h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .step-content p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .tip-box {
+      background: linear-gradient(135deg, var(--gold), #FCD34D);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      margin-bottom: 24px;
+      color: var(--ink);
+    }
+
+    .tip-box h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tip-box p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      font-size: 16px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.25s var(--ease-out);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-outline {
+      background: var(--white);
+      color: var(--slate);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-outline:hover { border-color: var(--coral); color: var(--coral); }
+
+    .btn-coral {
+      background: var(--coral);
+      color: white;
+      box-shadow: 0 4px 16px rgba(255, 107, 107, 0.3);
+    }
+
+    .btn-coral:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 107, 107, 0.4);
+    }
+
+    .ai-assistant {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 100;
+    }
+
+    .ai-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, var(--coral), var(--teal));
+      border: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      box-shadow: 0 8px 24px rgba(255, 107, 107, 0.35);
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .ai-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 32px rgba(255, 107, 107, 0.45);
+    }
+
+    @media (max-width: 600px) {
+      .top-bar { flex-wrap: wrap; gap: 8px; }
+      .progress-indicator { order: 3; width: 100%; justify-content: center; }
+      .nav-buttons { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a href="learning-path.html" class="back-btn">← 返回</a>
+    <span class="lesson-title">学习 Figma - 第3课</span>
+    <div class="progress-indicator">
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 40%"></div>
+      </div>
+      <span>40%</span>
+      <button class="help-btn" onclick="location.href='ai-chat.html'">❓</button>
+    </div>
+  </div>
+
+  <main class="main">
+    <div class="step-progress">
+      <div class="step-dots">
+        <div class="step-dot done"></div>
+        <div class="step-dot done"></div>
+        <div class="step-dot current"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+      <span class="step-text">3/8 步骤</span>
+    </div>
+
+    <div class="lesson-header">
+      <h1 class="lesson-name">第3课: 创建你的第一个设计</h1>
+      <p class="lesson-subtitle">学会使用 Figma 的基本工具</p>
+    </div>
+
+    <div class="video-area">
+      <div class="play-btn">▶</div>
+    </div>
+
+    <div class="steps-section">
+      <h3 class="steps-title">📝 步骤说明</h3>
+      <div class="step-list">
+        <div class="step-item done">
+          <div class="step-icon">✓</div>
+          <div class="step-content">
+            <h4>打开 Figma, 创建新文件</h4>
+            <p>点击左上角的 New design file</p>
+          </div>
+        </div>
+        <div class="step-item done">
+          <div class="step-icon">✓</div>
+          <div class="step-content">
+            <h4>选择画布尺寸</h4>
+            <p>推荐使用桌面端 1440×900</p>
+          </div>
+        </div>
+        <div class="step-item current">
+          <div class="step-icon">3</div>
+          <div class="step-content">
+            <h4>使用矩形工具画一个背景</h4>
+            <p>按 R 键快速选择矩形工具</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <h4>💡 小提示</h4>
+      <p>按住 Shift 键可以画出正方形哦！</p>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="#" class="btn btn-outline">← 上一课</a>
+      <a href="#" class="btn btn-coral">完成这一步 →</a>
+    </div>
+  </main>
+
+  <div class="ai-assistant">
+    <button class="ai-btn" onclick="location.href='ai-chat.html'">🤖</button>
+  </div>
+</body>
+</html>
