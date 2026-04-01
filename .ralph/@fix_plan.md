@@ -28,9 +28,9 @@
 - [x] 各服务实现 /health 健康检查端点
 
 ### 1.2.1 Gateway Service - 项目搭建
-- [ ] 初始化 FastAPI 项目（services/gateway/）
-- [ ] 配置 CORS 中间件
-- [ ] 配置 Swagger 文档（/docs）
+- [x] 初始化 FastAPI 项目（services/gateway/）
+- [x] 配置 CORS 中间件
+- [x] 配置 Swagger 文档（/docs）
 
 ### 1.2.2 Gateway Service - 路由配置
 - [ ] 实现 /api/v1/user/* 路由转发到 User Service
@@ -50,7 +50,7 @@
 - [ ] 实现 AI 接口特殊限流（更严格的调用频率限制）
 
 ### 1.3.1 User Service - 项目搭建
-- [ ] 初始化 FastAPI 项目（services/user/）
+- [x] 初始化 FastAPI 项目（services/user/）
 - [ ] 配置 PostgreSQL 数据库连接（SQLAlchemy async）
 - [ ] 配置 Redis 连接
 
@@ -111,7 +111,7 @@
 ## Phase 2：核心学习流程
 
 ### 2.1.1 Learning Service - 项目搭建
-- [ ] 初始化 FastAPI 项目（services/learning/）
+- [x] 初始化 FastAPI 项目（services/learning/）
 - [ ] 配置 PostgreSQL 数据库连接
 
 ### 2.1.2 Learning Service - 数据库设计
@@ -200,7 +200,7 @@
 ## Phase 3：AI 对话能力
 
 ### 3.1.1 AI Assistant Service - 项目搭建
-- [ ] 初始化 FastAPI 项目（services/ai-assistant/）
+- [x] 初始化 FastAPI 项目（services/ai-assistant/）
 - [ ] 配置 Redis 连接（短期记忆）
 - [ ] 配置 PostgreSQL 连接（长期记忆）
 - [ ] 配置 Pinecone 连接（向量检索）
@@ -304,7 +304,7 @@
 ## Phase 4：多模态+沙箱
 
 ### 4.1.1 Multimodal Service - 项目搭建
-- [ ] 初始化 FastAPI 项目（services/multimodal/）
+- [x] 初始化 FastAPI 项目（services/multimodal/）
 - [ ] 申请讯飞 API 凭证
 - [ ] 配置讯飞 SDK
 
@@ -328,7 +328,7 @@
 - [ ] 实现口型同步
 
 ### 4.2.1 Sandbox Service - 项目搭建
-- [ ] 初始化 FastAPI 项目（services/sandbox/）
+- [x] 初始化 FastAPI 项目（services/sandbox/）
 - [ ] 配置 Docker 连接（Docker SDK for Python）
 - [ ] 准备基础执行镜像（Python + Node.js）
 
